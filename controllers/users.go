@@ -89,7 +89,7 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 		switch err {
 		case models.ErrNotFound:
 			fmt.Fprintln(w, "Invalid email address.")
-		case models.ErrInvalidPassword:
+		case models.ErrPasswordIncorrect:
 			fmt.Fprintln(w, "Invalid password provided..")
 		default:
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -106,7 +106,7 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	http.Redirect(w, r, "/CookieTest", http.StatusFound)
+	http.Redirect(w, r, "/cookieTest", http.StatusFound)
 }
 
 // signIn is used to sign the given user in via cookies
