@@ -110,7 +110,7 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 		u.LoginView.Render(w, vd)
 		return
 	}
-	http.Redirect(w, r, "/cookieTest", http.StatusFound)
+	http.Redirect(w, r, "/cookietest", http.StatusFound)
 }
 
 // signIn is used to sign the given user in via cookies
