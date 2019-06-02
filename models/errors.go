@@ -6,9 +6,6 @@ const (
 	// ErrNotFound is returned when a resource cannot be found in the database.
 	ErrNotFound modelError = "models: resource not found"
 
-	// ErrIdInvalid is returned when an invalid ID is provided to a method like Delete
-	ErrIdInvalid modelError = "models: ID provided was invalid"
-
 	// ErrPasswordIncorrect is returned when an invalid password is used when
 	// attempting to authenticate a user.
 	ErrPasswordIncorrect modelError = "models: incorrect password provided"
@@ -32,11 +29,18 @@ const (
 	// with a user password that is less than 8 characters
 	ErrPasswordTooShort modelError = "models: password must be at least 8 characters long."
 
+	ErrTitleRequired modelError = "models: title is required"
+
+	// ErrIdInvalid is returned when an invalid ID is provided to a method like Delete
+	ErrIdInvalid privateError = "models: ID provided was invalid"
+
 	// ErrRememberRequired is returned when a user don't provided
-	ErrRememberRequired modelError = "models: remember is required."
+	ErrRememberRequired privateError = "models: remember is required."
 
 	// ErrRememberTooShort is returned when a remember token is not at least 32 bytes
-	ErrRememberTooShort modelError = "models: remember token must be at least 32 bytes"
+	ErrRememberTooShort privateError = "models: remember token must be at least 32 bytes"
+
+	ErrUserIDRequired privateError = "models: user ID is required"
 )
 
 type modelError string
@@ -50,4 +54,10 @@ func (e modelError) Public() string {
 	split := strings.Split(s, " ")
 	split[0] = strings.Title(split[0])
 	return strings.Join(split, " ")
+}
+
+type privateError string
+
+func (e privateError) Error() string {
+	return string(e)
 }
