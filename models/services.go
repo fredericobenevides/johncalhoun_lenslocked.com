@@ -37,5 +37,5 @@ func (s *Services) DestructiveReset() error {
 
 // AutoMigrate will attempt to automatically migrate all tables
 func (s *Services) AutoMigrate() error {
-	return s.db.AutoMigrate(&User{}).Error
+	return s.db.AutoMigrate(&User{}, &Gallery{}).Error
 }
