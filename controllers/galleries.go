@@ -170,30 +170,14 @@ func (g *Galleries) ImageUpload(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	fmt.Fprintln(w, "Files successfully upload!")
+	url, err := g.r.Get(EditGallery).URL("id", fmt.Sprintf("%v", gallery.ID))
+	if err != nil {
+		http.Redirect(w, r, "/galleries", http.StatusFound)
+	}
+	http.Redirect(w, r, url.Path, http.StatusFound)
 
-	// var vd views.Data
-	// vd.Yield = gallery
-	// var form GalleryForm
-	// if err := parseForm(r, &form); err != nil {
-	// 	log.Println(err)
-	// 	vd.SetAlert(err)
-	// 	g.EditView.Render(w, r, vd)
-	// 	return
-	// }
-
-	// gallery.Title = form.Title
-	// err = g.gs.Update(gallery)
-	// if err != nil {
-	// 	vd.SetAlert(err)
-	// 	g.EditView.Render(w, r, vd)
-	// 	return
-	// }
-	// vd.Alert = &views.Alert{
-	// 	Level:   views.AlertLvlSuccess,
-	// 	Message: "Gallery successfully updated!",
-	// }
-	// g.EditView.Render(w, r, vd)
+	// fmt.Fprintln(w, "Files successfully upload!")
+	fmt.Fprintln(w, "Files:", http.StatusFound)
 }
 
 // POST /galleries/:id/delete
@@ -273,5 +257,7 @@ func (g *Galleries) galleryByID(w http.ResponseWriter, r *http.Request) (*models
 		return nil, err
 	}
 
+	images, err := g.is.ByGalleryID(gallery.ID)
+	gallery.Images = images
 	return gallery, nil
 }
