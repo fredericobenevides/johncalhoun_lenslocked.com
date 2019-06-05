@@ -4,3 +4,4 @@ tmp/
 # Don't include our binary
 lenslocked.com
 images/**
+tags
