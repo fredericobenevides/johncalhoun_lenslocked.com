@@ -69,8 +69,13 @@ func (u *Users) Create(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
+	alert := views.Alert{
+		Level:   views.AlertLvlSuccess,
+		Message: "Welcome to LensLocked.com!",
+	}
+	views.RedirectAlert(w, r, "/galleries", http.StatusFound, alert)
 	// http.Redirect(w, r, "/cookietest", http.StatusFound)
-	http.Redirect(w, r, "/galleries", http.StatusFound)
+	// http.Redirect(w, r, "/galleries", http.StatusFound)
 }
 
 type LoginForm struct {
@@ -110,6 +115,7 @@ func (u *Users) Login(w http.ResponseWriter, r *http.Request) {
 		u.LoginView.Render(w, r, vd)
 		return
 	}
+
 	// http.Redirect(w, r, "/cookietest", http.StatusFound)
 	http.Redirect(w, r, "/galleries", http.StatusFound)
 }
