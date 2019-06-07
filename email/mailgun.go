@@ -2,12 +2,15 @@ package email
 
 import (
 	"fmt"
+	"net/url"
 
 	"gopkg.in/mailgun/mailgun-go.v1"
 )
 
 const (
 	welcomeSubject = "Welcome to LensLocked.com!"
+	resetSubject   = "Instructions for resetting your password"
+	resetBaseURL   = "https://www.lenslocked.com/reset"
 )
 
 const welcomeText = `Hi there!
@@ -85,6 +88,21 @@ type Client struct {
 func (c *Client) Welcome(toName, toEmail string) error {
 	message := mailgun.NewMessage(c.from, welcomeSubject, welcomeText, buildEmail(toName, toEmail))
 	message.SetHtml(welcomeHTML)
+	_, _, err := c.mg.Send(message)
+	if err != nil {
+		fmt.Println("Erro ao enviar", err)
+	}
+	return err
+}
+
+func (c *Client) ResetPw(toEmail, token string) error {
+	v := url.Values{}
+	v.Set("token", token)
+	resetUrl := resetBaseURL + "?" + v.Encode()
+	resetText := fmt.Sprintf(resetTextTmpl, resetUrl, token)
+	message := mailgun.NewMessage(c.from, resetSubject, resetText, toEmail)
+	resetHTML := fmt.Sprintf(resetHTMLTmpl, resetUrl, resetUrl, token)
+	message.SetHtml(resetHTML)
 	_, _, err := c.mg.Send(message)
 	if err != nil {
 		fmt.Println("Erro ao enviar", err)
